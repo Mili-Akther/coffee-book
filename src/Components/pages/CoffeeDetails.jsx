@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useLoaderData, useParams } from "react-router-dom";
 import nutritionImg from '../../assets/nutrition.png'
+import { addFavorite, getAllFavorites} from "../../utils";
 const CoffeeDetails = () => {
   const data = useLoaderData();
   const { id } = useParams();
   const [coffee, setCoffee] = useState({});
-
+  const [isFavorite, setIsFavorite] = useState(false)
   useEffect(() => {
     const singleData = data.find((coffee) => coffee.id == id);
     setCoffee(singleData);
+    const favorites = getAllFavorites()
+     const isExist = favorites.find((item) => item.id == singleData.id);
+    if(isExist) {
+       setIsFavorite(true);
+    }
   }, [data, id]);
 
   const {
@@ -21,6 +27,13 @@ const CoffeeDetails = () => {
     rating,
     popularity,
   } = coffee;
+
+  //handle favorite btn click
+  const  handleFavorite= (coffee)=> {
+    addFavorite(coffee);
+    setIsFavorite(true);
+   
+  }
   return (
     <div className="my-12">
       {/* description */}
@@ -37,7 +50,13 @@ const CoffeeDetails = () => {
           <p className="text-base">Rating:{rating}</p>
         </div>
         <div>
-          <button className="btn btn-warning">Add Favorite</button>
+          <button
+            disabled= {isFavorite}
+            onClick={() => handleFavorite(coffee)}
+            className="btn btn-warning"
+          >
+            Add Favorite
+          </button>
         </div>
       </div>
       {/* making process */}
@@ -52,9 +71,9 @@ const CoffeeDetails = () => {
             <h1 className="font-thin text-2xl">Ingredients:</h1>
             <ul className="text-xl ml-12">
               {ingredients &&
-                ingredients.map((i) => (
+                ingredients.map((item,i) => (
                   <li className="list-disc" key={i}>
-                    {i}
+                    {item}
                   </li>
                 ))}
             </ul>
@@ -62,17 +81,17 @@ const CoffeeDetails = () => {
             <h1 className="font-thin text-2xl">Nutrition:</h1>
             <ul className="text-xl ml-12">
               {nutrition_info &&
-                Object.keys(nutrition_info).map((n) => (
-                  <li className="list-disc" key={nutrition_info[n]}>
+                Object.keys(nutrition_info).map((n, i) => (
+                  <li className="list-disc" key={i}>
                     {n}:{nutrition_info[n]}
                   </li>
                 ))}
             </ul>
           </div>
         </div>
-      <div className="flex-1">
-                <img src={nutritionImg} alt="" />
-      </div>
+        <div className="flex-1">
+          <img src={nutritionImg} alt="" />
+        </div>
       </div>
     </div>
   );
