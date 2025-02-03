@@ -2,7 +2,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 const Navbar = () => {
     return (
-      <div className="navbar backdrop-blur-xl bg-white/30 z-50 fixed">
+      <div className="navbar px-28 backdrop-blur-xl bg-white/30 z-50 fixed">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -58,7 +58,7 @@ const Navbar = () => {
             </ul>
           </div>
           <Link to="/" className=" text-xl">
-            Cook_BOOK
+            COFFEE_BOOK
           </Link>
         </div>
         <div className="navbar-end hidden lg:flex">
